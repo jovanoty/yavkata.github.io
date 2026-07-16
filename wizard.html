@@ -18,7 +18,7 @@
 
     h1 {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #00FF00;
@@ -26,12 +26,28 @@
       font-size: 48px;
       text-align: center;
     }
+
+    #playSound {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #00FF00;
+      color: black;
+      font-family: 'Consolas', monospace;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00FF00;
+    }
   </style>
 </head>
 <body>
   <canvas id="matrix"></canvas>
   <h1>Yavkata Matrix Wizard</h1>
-  <audio id="bootSound" src="boot.mp3" autoplay></audio>
+  <button id="playSound">▶ Пусни звук</button>
+  <audio id="bootSound" src="boot.mp3"></audio>
 
   <script>
     const canvas = document.getElementById('matrix');
@@ -59,10 +75,12 @@
 
     setInterval(draw, 33);
 
-    window.addEventListener('load', () => {
-      const sound = document.getElementById('bootSound');
-      sound.volume = 0.5;
-      setTimeout(() => sound.play(), 1000);
+    const sound = document.getElementById('bootSound');
+    const btn = document.getElementById('playSound');
+    sound.volume = 0.5;
+    btn.addEventListener('click', () => {
+      sound.play();
+      btn.style.display = 'none'; // скрива бутона след пускане
     });
   </script>
 </body>
