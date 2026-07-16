@@ -18,7 +18,7 @@
 
     h1 {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #00FF00;
@@ -27,6 +27,16 @@
       opacity: 0;
       text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
       animation: fadeCycle 10s ease-in-out infinite, neonPulse 2s ease-in-out infinite;
+    }
+
+    #loading {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: #00FF00;
+      letter-spacing: 5px;
     }
 
     @keyframes fadeCycle {
@@ -46,6 +56,7 @@
 <body>
   <canvas id="matrix"></canvas>
   <h1>Yavkata Matrix Wizard</h1>
+  <div id="loading">Loading</div>
   <audio id="bootSound" src="boot.mp3" autoplay></audio>
 
   <script>
@@ -74,6 +85,15 @@
 
     setInterval(draw, 33);
 
+    // Loading точки
+    const loading = document.getElementById('loading');
+    let dots = '';
+    setInterval(() => {
+      dots = dots.length < 6 ? dots + '.' : '';
+      loading.textContent = 'Loading' + dots;
+    }, 500);
+
+    // Автоматично пускане на boot звука
     window.addEventListener('load', () => {
       const sound = document.getElementById('bootSound');
       sound.volume = 0.5;
