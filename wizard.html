@@ -26,14 +26,15 @@
       font-size: 48px;
       text-align: center;
       opacity: 0;
-      animation: fadeInOut 8s ease-in-out forwards;
+      animation: fadeCycle 10s ease-in-out infinite;
     }
 
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      70% { opacity: 1; }
-      100% { opacity: 0; }
+    @keyframes fadeCycle {
+      0% { opacity: 0; }      /* невидим */
+      20% { opacity: 1; }     /* плавно се появява */
+      50% { opacity: 1; }     /* стои видим */
+      80% { opacity: 0; }     /* изчезва */
+      100% { opacity: 0; }    /* пауза преди нов цикъл */
     }
   </style>
 </head>
