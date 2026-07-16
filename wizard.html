@@ -25,13 +25,14 @@
       text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
       font-size: 48px;
       text-align: center;
-      opacity: 1;
-      animation: fadeOut 5s ease-in-out forwards;
-      animation-delay: 3s; /* изчаква 3 секунди преди да започне изчезването */
+      opacity: 0;
+      animation: fadeInOut 8s ease-in-out forwards;
     }
 
-    @keyframes fadeOut {
-      0% { opacity: 1; }
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      70% { opacity: 1; }
       100% { opacity: 0; }
     }
   </style>
