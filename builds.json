@@ -1,0 +1,11 @@
+{
+  "builds": [
+    {
+      "name": "Only TV",
+      "version": "1.0",
+      "url": "https://yavkata.github.io/onlytv.zip",
+      "image": "https://yavkata.github.io/onlytv.png",
+      "description": "Основен билд за телевизия и стрийминг."
+    }
+  ]
+}
