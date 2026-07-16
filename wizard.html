@@ -22,19 +22,24 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: #00FF00;
-      text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
       font-size: 48px;
       text-align: center;
       opacity: 0;
-      animation: fadeCycle 10s ease-in-out infinite;
+      text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
+      animation: fadeCycle 10s ease-in-out infinite, neonPulse 2s ease-in-out infinite;
     }
 
     @keyframes fadeCycle {
-      0% { opacity: 0; }      /* невидим */
-      20% { opacity: 1; }     /* плавно се появява */
-      50% { opacity: 1; }     /* стои видим */
-      80% { opacity: 0; }     /* изчезва */
-      100% { opacity: 0; }    /* пауза преди нов цикъл */
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      50% { opacity: 1; }
+      80% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes neonPulse {
+      0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00; }
+      50% { text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00, 0 0 60px #00FF00; }
     }
   </style>
 </head>
@@ -69,7 +74,6 @@
 
     setInterval(draw, 33);
 
-    // Автоматично пускане на boot звука при стартиране
     window.addEventListener('load', () => {
       const sound = document.getElementById('bootSound');
       sound.volume = 0.5;
