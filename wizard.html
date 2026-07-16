@@ -2,77 +2,68 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8">
-  <title>Matrix Wizard - Yavkata</title>
+  <title>Yavkata Matrix Wizard</title>
   <style>
     body {
-      background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a1a 100%);
-      color: #00ffcc;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
       margin: 0;
-      padding: 0;
+      background: black;
+      overflow: hidden;
+      color: #00FF00;
+      font-family: 'Consolas', monospace;
     }
-    header {
-      background-color: #111;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      border-bottom: 2px solid #00ffcc;
+
+    canvas {
+      display: block;
     }
-    nav {
-      margin-top: 30px;
-    }
-    nav button {
-      background-color: #00ffcc;
-      color: #111;
-      border: none;
-      padding: 12px 25px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    nav button:hover {
-      background-color: #00ffaa;
-    }
-    .build-card {
-      background-color: #111;
-      border: 1px solid #00ffcc;
-      border-radius: 8px;
-      width: 300px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-    .build-card img {
-      width: 100%;
-      border-radius: 6px;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #888;
+
+    h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00FF00;
+      text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+      font-size: 48px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <header>Matrix Wizard - Yavkata</header>
-  <nav>
-    <button>Builds</button>
-    <button>Backup</button>
-    <button>Restore</button>
-    <button>Tools</button>
-    <button>Settings</button>
-  </nav>
+  <canvas id="matrix"></canvas>
+  <h1>Yavkata Matrix Wizard</h1>
+  <audio id="bootSound" src="boot.mp3" autoplay></audio>
 
-  <div class="build-card">
-    <img src="https://yavkata.github.io/onlytv.png" alt="Only TV">
-    <h2>Only TV Build</h2>
-    <p>Основен билд за телевизия и стрийминг.</p>
-    <button>Инсталирай</button>
-  </div>
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-  <footer>© 2026 Yavkata Wizard | Matrix Edition</footer>
+    const letters = '01';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00FF00';
+      ctx.font = fontSize + 'px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+
+    window.addEventListener('load', () => {
+      const sound = document.getElementById('bootSound');
+      sound.volume = 0.5;
+      setTimeout(() => sound.play(), 1000);
+    });
+  </script>
 </body>
 </html>
