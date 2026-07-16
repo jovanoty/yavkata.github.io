@@ -1,0 +1,17 @@
+{
+  "wizard_name": "Matrix Wizard",
+  "version": "1.0",
+  "menu": [
+    "Builds",
+    "Backup & Restore",
+    "Tools",
+    "Settings"
+  ],
+  "update_url": "https://yavkata.github.io/1.json",
+  "backup": {
+    "enabled": true,
+    "default_location": "special://home/backups/",
+    "allow_user_backup": true,
+    "admin_backup": true
+  }
+}
