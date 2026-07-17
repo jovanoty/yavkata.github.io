@@ -16,17 +16,18 @@
       display: block;
     }
 
+    /* --- TITLE ANIMATION (STAR WARS STYLE) --- */
     h1 {
       position: absolute;
       top: 45%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(0.1) perspective(600px) rotateX(45deg);
       color: #00FF00;
       font-size: 48px;
       text-align: center;
       text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
       opacity: 0;
-      animation: fadeCycle 10s ease-in-out infinite, neonPulse 2s ease-in-out infinite;
+      animation: approach 5s ease-out forwards;
     }
 
     #loading {
@@ -37,16 +38,20 @@
       font-size: 24px;
       color: #00FF00;
       letter-spacing: 5px;
-      opacity: 1;
+      opacity: 0;
       transition: opacity 1s ease-in-out;
     }
 
-    @keyframes fadeCycle {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
+    @keyframes approach {
+      0% {
+        transform: translate(-50%, -50%) scale(0.1) perspective(600px) rotateX(45deg);
+        opacity: 0;
+      }
       50% { opacity: 1; }
-      80% { opacity: 0; }
-      100% { opacity: 0; }
+      100% {
+        transform: translate(-50%, -50%) scale(1) perspective(600px) rotateX(0deg);
+        opacity: 1;
+      }
     }
 
     @keyframes neonPulse {
@@ -57,19 +62,23 @@
 </head>
 <body>
   <canvas id="matrix"></canvas>
-  <h1>Yavkata Matrix Wizard</h1>
+  <h1 id="title">Yavkata Matrix Wizard</h1>
   <div id="loading">Loading...</div>
   <audio id="bootSound" src="boot.mp3" autoplay></audio>
 
   <script>
-    // Зареждаме настройките от wizard.json
+    // --- LOAD CONFIG ---
     fetch('wizard.json?nocache=' + Date.now())
       .then(response => response.json())
       .then(config => {
+
         const fontSize = config.fontSize;
         const speed = config.speed;
         const brightness = config.brightness;
+        const showSystemReady = config.showSystemReady;
+        const systemReadyDelay = config.systemReadyDelay;
 
+        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
@@ -82,42 +91,49 @@
         function draw() {
           ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
+
           ctx.fillStyle = `rgba(0, 255, 0, ${brightness})`;
           ctx.font = fontSize + 'px monospace';
 
           for (let i = 0; i < drops.length; i++) {
             const text = letters[Math.floor(Math.random() * letters.length)];
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) drops[i] = 0;
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
+              drops[i] = 0;
+            }
+
             drops[i] += speed;
           }
         }
 
-        setInterval(draw, 50);
-      })
-      .catch(error => console.error('Грешка при зареждане на JSON:', error));
+        // ORIGINAL DENSITY (33ms)
+        setInterval(draw, 33);
 
-    // Loading точки
-    const loading = document.getElementById('loading');
-    let dots = '';
-    const interval = setInterval(() => {
-      dots = dots.length < 6 ? dots + '.' : '';
-      loading.textContent = 'Loading' + dots;
-    }, 500);
+        // --- TITLE + LOADING + SYSTEM READY ---
+        setTimeout(() => {
+          const title = document.getElementById('title');
+          title.style.animation = 'neonPulse 2s ease-in-out infinite';
 
-    // Скриване на "Loading" след 5 секунди
-    setTimeout(() => {
-      clearInterval(interval);
-      loading.style.opacity = 0;
-    }, 5000);
+          const loading = document.getElementById('loading');
+          loading.style.opacity = 1;
+          loading.textContent = 'Loading...';
 
-    // Автоматично пускане на boot звука
+          if (showSystemReady) {
+            setTimeout(() => {
+              loading.textContent = 'System Ready';
+              setTimeout(() => loading.style.opacity = 0, 2000);
+            }, systemReadyDelay);
+          }
+
+        }, 5000);
+      });
+
+    // --- BOOT SOUND ---
     window.addEventListener('load', () => {
       const sound = document.getElementById('bootSound');
       sound.volume = 0.5;
-      sound.play().catch(() => {
-        console.log('Автоматичното възпроизвеждане е блокирано от браузъра.');
-      });
+      sound.play().catch(() => {});
     });
   </script>
 </body>
