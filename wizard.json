@@ -1,17 +1,35 @@
-{
-  "wizard_name": "Matrix Wizard",
-  "version": "1.0",
-  "menu": [
-    "Builds",
-    "Backup & Restore",
-    "Tools",
-    "Settings"
-  ],
-  "update_url": "https://yavkata.github.io/1.json",
-  "backup": {
-    "enabled": true,
-    "default_location": "special://home/backups/",
-    "allow_user_backup": true,
-    "admin_backup": true
+<script>
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = '01';
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function draw() {
+    // По-блед фон (по-малко контраст)
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // По-бледи числа
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.55)';
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      // По-бавна скорост
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
+        drops[i] = 0;
+      }
+
+      drops[i] += 0.5; // вместо +1 → по-бавно падане
+    }
   }
-}
+
+  setInterval(draw, 50); // вместо 33ms → по-бавно движение
+</script>
