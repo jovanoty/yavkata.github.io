@@ -16,7 +16,6 @@
       display: block;
     }
 
-    /* --- TITLE ANIMATION (STAR WARS STYLE) --- */
     h1 {
       position: absolute;
       top: 45%;
@@ -64,7 +63,6 @@
   <script>
     let rainInterval = null;
 
-    // --- LOAD CONFIG ---
     fetch('wizard.json?nocache=' + Date.now())
       .then(response => response.json())
       .then(config => {
@@ -75,7 +73,6 @@
         const showSystemReady = config.showSystemReady;
         const systemReadyDelay = config.systemReadyDelay;
 
-        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
@@ -104,10 +101,8 @@
           }
         }
 
-        // START MATRIX RAIN
         rainInterval = setInterval(draw, 33);
 
-        // --- TITLE + LOADING + SYSTEM READY ---
         setTimeout(() => {
           const loading = document.getElementById('loading');
           loading.style.opacity = 1;
@@ -120,8 +115,9 @@
               setTimeout(() => {
                 loading.style.opacity = 0;
 
-                // STOP MATRIX RAIN HERE
-                clearInterval(rainInterval);
+                // 🟩 ТУК ДЪЖДЪТ ИЗЧЕЗВА НАПЪЛНО
+                clearInterval(rainInterval);      // спираме дъжда
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // изчистваме екрана
 
               }, 2000);
             }, systemReadyDelay);
@@ -130,7 +126,6 @@
         }, 5000);
       });
 
-    // --- BOOT SOUND ---
     window.addEventListener('load', () => {
       const sound = document.getElementById('bootSound');
       sound.volume = 0.5;
