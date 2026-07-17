@@ -25,7 +25,10 @@
       color: #00FF00;
       font-size: 48px;
       text-align: center;
-      text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
+
+      /* ⭐ Вариант Б — балансиран ореол */
+      text-shadow: 0 0 5px #00FF00, 0 0 12px #00FF00;
+
       opacity: 0;
       animation: approach 5s ease-out forwards;
     }
@@ -79,4 +82,40 @@
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
-        canvas.width = window.inner
+        canvas.width = window.innerWidth;
+
+        const letters = '01';
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function draw() {
+          ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          ctx.fillStyle = `rgba(0, 255, 0, 1)`;
+          ctx.font = fontSize + 'px monospace';
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = letters[Math.floor(Math.random() * letters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
+              drops[i] = 0;
+            }
+
+            drops[i] += speed;
+          }
+        }
+
+        // START MATRIX RAIN
+        rainInterval = setInterval(draw, 33);
+
+        // --- TITLE + LOADING + SYSTEM READY ---
+        setTimeout(() => {
+          const loading = document.getElementById('loading');
+          loading.style.opacity = 1;
+          loading.textContent = 'Loading...';
+
+          if (showSystemReady) {
+            setTimeout(() => {
+              loading.textContent = '
