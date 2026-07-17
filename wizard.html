@@ -5,50 +5,6 @@
   <title>Yavkata Matrix Wizard</title>
   <style>
     body {
-      <script>
-  // Четем настройките от wizard.json
-  fetch('wizard.json')
-    .then(response => response.json())
-    .then(config => {
-
-      // Взимаме стойностите от JSON
-      const fontSize = config.fontSize;
-      const speed = config.speed;
-      const brightness = config.brightness;
-
-      // MATRIX RAIN
-      const canvas = document.getElementById('matrix');
-      const ctx = canvas.getContext('2d');
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
-
-      const letters = '01';
-      const columns = canvas.width / fontSize;
-      const drops = Array(Math.floor(columns)).fill(1);
-
-      function draw() {
-        ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = `rgba(0, 255, 0, ${brightness})`;
-        ctx.font = fontSize + 'px monospace';
-
-        for (let i = 0; i < drops.length; i++) {
-          const text = letters[Math.floor(Math.random() * letters.length)];
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
-            drops[i] = 0;
-          }
-
-          drops[i] += speed; // ← скорост от JSON
-        }
-      }
-
-      setInterval(draw, 50);
-    });
-</script>
-
       margin: 0;
       background: black;
       overflow: hidden;
@@ -106,30 +62,40 @@
   <audio id="bootSound" src="boot.mp3" autoplay></audio>
 
   <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    // Зареждаме настройките от wizard.json
+    fetch('wizard.json?nocache=' + Date.now())
+      .then(response => response.json())
+      .then(config => {
+        const fontSize = config.fontSize;
+        const speed = config.speed;
+        const brightness = config.brightness;
 
-    const letters = '01';
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
 
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#00FF00';
-      ctx.font = fontSize + 'px monospace';
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
+        const letters = '01';
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
 
-    setInterval(draw, 33);
+        function draw() {
+          ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = `rgba(0, 255, 0, ${brightness})`;
+          ctx.font = fontSize + 'px monospace';
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = letters[Math.floor(Math.random() * letters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) drops[i] = 0;
+            drops[i] += speed;
+          }
+        }
+
+        setInterval(draw, 50);
+      })
+      .catch(error => console.error('Грешка при зареждане на JSON:', error));
 
     // Loading точки
     const loading = document.getElementById('loading');
