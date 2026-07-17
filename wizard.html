@@ -62,6 +62,8 @@
   <audio id="bootSound" src="boot.mp3" autoplay></audio>
 
   <script>
+    let rainInterval = null;
+
     // --- LOAD CONFIG ---
     fetch('wizard.json?nocache=' + Date.now())
       .then(response => response.json())
@@ -102,8 +104,8 @@
           }
         }
 
-        // ORIGINAL DENSITY (33ms)
-        setInterval(draw, 33);
+        // START MATRIX RAIN
+        rainInterval = setInterval(draw, 33);
 
         // --- TITLE + LOADING + SYSTEM READY ---
         setTimeout(() => {
@@ -114,7 +116,14 @@
           if (showSystemReady) {
             setTimeout(() => {
               loading.textContent = 'System Ready';
-              setTimeout(() => loading.style.opacity = 0, 2000);
+
+              setTimeout(() => {
+                loading.style.opacity = 0;
+
+                // STOP MATRIX RAIN HERE
+                clearInterval(rainInterval);
+
+              }, 2000);
             }, systemReadyDelay);
           }
 
