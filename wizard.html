@@ -16,6 +16,7 @@
       display: block;
     }
 
+    /* --- TITLE ANIMATION (STAR WARS STYLE) --- */
     h1 {
       position: absolute;
       top: 45%;
@@ -63,6 +64,7 @@
   <script>
     let rainInterval = null;
 
+    // --- LOAD CONFIG ---
     fetch('wizard.json?nocache=' + Date.now())
       .then(response => response.json())
       .then(config => {
@@ -73,64 +75,8 @@
         const showSystemReady = config.showSystemReady;
         const systemReadyDelay = config.systemReadyDelay;
 
+        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-
-        const letters = '01';
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function draw() {
-          ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          ctx.fillStyle = `rgba(0, 255, 0, 1)`;
-          ctx.font = fontSize + 'px monospace';
-
-          for (let i = 0; i < drops.length; i++) {
-            const text = letters[Math.floor(Math.random() * letters.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
-              drops[i] = 0;
-            }
-
-            drops[i] += speed;
-          }
-        }
-
-        rainInterval = setInterval(draw, 33);
-
-        setTimeout(() => {
-          const loading = document.getElementById('loading');
-          loading.style.opacity = 1;
-          loading.textContent = 'Loading...';
-
-          if (showSystemReady) {
-            setTimeout(() => {
-              loading.textContent = 'System Ready';
-
-              setTimeout(() => {
-                loading.style.opacity = 0;
-
-                // 🟩 ТУК ДЪЖДЪТ ИЗЧЕЗВА НАПЪЛНО
-                clearInterval(rainInterval);      // спираме дъжда
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // изчистваме екрана
-
-              }, 2000);
-            }, systemReadyDelay);
-          }
-
-        }, 5000);
-      });
-
-    window.addEventListener('load', () => {
-      const sound = document.getElementById('bootSound');
-      sound.volume = 0.5;
-      sound.play().catch(() => {});
-    });
-  </script>
-</body>
-</html>
+        canvas.width = window.inner
