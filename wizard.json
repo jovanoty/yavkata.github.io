@@ -1,35 +1,123 @@
-<script>
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-
-  const letters = '01';
-  const fontSize = 16;
-  const columns = canvas.width / fontSize;
-  const drops = Array(Math.floor(columns)).fill(1);
-
-  function draw() {
-    // По-блед фон (по-малко контраст)
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // По-бледи числа
-    ctx.fillStyle = 'rgba(0, 255, 0, 0.55)';
-    ctx.font = fontSize + 'px monospace';
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      // По-бавна скорост
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
-        drops[i] = 0;
-      }
-
-      drops[i] += 0.5; // вместо +1 → по-бавно падане
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <title>Yavkata Matrix Wizard</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      color: #00FF00;
+      font-family: 'Consolas', monospace;
     }
-  }
 
-  setInterval(draw, 50); // вместо 33ms → по-бавно движение
-</script>
+    canvas {
+      display: block;
+    }
+
+    h1 {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #00FF00;
+      font-size: 48px;
+      text-align: center;
+      text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
+      opacity: 0;
+      animation: fadeCycle 10s ease-in-out infinite, neonPulse 2s ease-in-out infinite;
+    }
+
+    #loading {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: #00FF00;
+      letter-spacing: 5px;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
+    }
+
+    @keyframes fadeCycle {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      50% { opacity: 1; }
+      80% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes neonPulse {
+      0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00; }
+      50% { text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00, 0 0 60px #00FF00; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+
+  <h1>Yavkata Matrix Wizard</h1>
+  <div id="loading">Loading...</div>
+
+  <audio id="bootSound" src="boot.mp3" autoplay></audio>
+
+  <script>
+    // MATRIX RAIN
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = '01';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.55)';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.995) {
+          drops[i] = 0;
+        }
+
+        drops[i] += 0.5;
+      }
+    }
+
+    setInterval(draw, 50);
+
+    // LOADING ТОЧКИ
+    const loading = document.getElementById('loading');
+    let dots = '';
+    const interval = setInterval(() => {
+      dots = dots.length < 6 ? dots + '.' : '';
+      loading.textContent = 'Loading' + dots;
+    }, 500);
+
+    // СКРИВА "Loading" СЛЕД 5 СЕКУНДИ
+    setTimeout(() => {
+      clearInterval(interval);
+      loading.style.opacity = 0;
+    }, 5000);
+
+    // ЗВУК ПРИ СТАРТ
+    window.addEventListener('load', () => {
+      const sound = document.getElementById('bootSound');
+      sound.volume = 0.5;
+      sound.play().catch(() => {
+        console.log('Автоматичното възпроизвеждане е блокирано от браузъра.');
+      });
+    });
+  </script>
+</body>
+</html>
