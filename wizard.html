@@ -16,7 +16,6 @@
       display: block;
     }
 
-    /* --- TITLE ANIMATION (STAR WARS STYLE) --- */
     h1 {
       position: absolute;
       top: 45%;
@@ -26,8 +25,8 @@
       font-size: 48px;
       text-align: center;
 
-      /* ⭐ Вариант Б — балансиран ореол */
-      text-shadow: 0 0 5px #00FF00, 0 0 12px #00FF00;
+      /* ⭐ Вариант A — много фин ореол */
+      text-shadow: 0 0 3px #00FF00;
 
       opacity: 0;
       animation: approach 5s ease-out forwards;
@@ -67,7 +66,6 @@
   <script>
     let rainInterval = null;
 
-    // --- LOAD CONFIG ---
     fetch('wizard.json?nocache=' + Date.now())
       .then(response => response.json())
       .then(config => {
@@ -78,7 +76,6 @@
         const showSystemReady = config.showSystemReady;
         const systemReadyDelay = config.systemReadyDelay;
 
-        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
@@ -107,10 +104,8 @@
           }
         }
 
-        // START MATRIX RAIN
         rainInterval = setInterval(draw, 33);
 
-        // --- TITLE + LOADING + SYSTEM READY ---
         setTimeout(() => {
           const loading = document.getElementById('loading');
           loading.style.opacity = 1;
@@ -118,4 +113,28 @@
 
           if (showSystemReady) {
             setTimeout(() => {
-              loading.textContent = '
+              loading.textContent = 'System Ready';
+
+              setTimeout(() => {
+                loading.style.opacity = 0;
+
+                clearInterval(rainInterval);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+              }, 2000);
+            }, systemReadyDelay);
+          }
+
+        }, 5000);
+      });
+
+    window.addEventListener('load', () => {
+      const sound = document.getElementById('bootSound');
+      sound.volume = 0.5;
+      sound.play().catch(() => {});
+    });
+  </script>
+</body>
+</html>
