@@ -53,11 +53,6 @@
         opacity: 1;
       }
     }
-
-    @keyframes neonPulse {
-      0%, 100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00; }
-      50% { text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00, 0 0 60px #00FF00; }
-    }
   </style>
 </head>
 <body>
@@ -92,7 +87,7 @@
           ctx.fillStyle = `rgba(0, 0, 0, ${brightness})`;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          ctx.fillStyle = `rgba(0, 255, 0, ${brightness})`;
+          ctx.fillStyle = `rgba(0, 255, 0, 1)`;
           ctx.font = fontSize + 'px monospace';
 
           for (let i = 0; i < drops.length; i++) {
@@ -112,9 +107,6 @@
 
         // --- TITLE + LOADING + SYSTEM READY ---
         setTimeout(() => {
-          const title = document.getElementById('title');
-          title.style.animation = 'neonPulse 2s ease-in-out infinite';
-
           const loading = document.getElementById('loading');
           loading.style.opacity = 1;
           loading.textContent = 'Loading...';
