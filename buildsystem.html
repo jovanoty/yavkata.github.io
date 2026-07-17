@@ -96,8 +96,9 @@ fetch("builds.json")
     });
 
 function installBuild(url) {
-    alert("Installing build from: " + url);
+    window.location = "plugin://plugin.program.matrixwizard/?action=install&url=" + url;
 }
+
 
 function installZip(url) {
     alert("Installing ZIP from: " + url);
