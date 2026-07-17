@@ -1,5 +1,7 @@
 {
-  "fontSize": 16,
-  "speed": 1,
-  "brightness": 0.05
+  "fontSize": 20,
+  "speed": 0.7,
+  "brightness": 0.05,
+  "showSystemReady": true,
+  "systemReadyDelay": 5000
 }
