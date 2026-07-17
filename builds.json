@@ -4,7 +4,9 @@
       "name": "Only TV",
       "version": "1.0",
       "url": "https://yavkata.github.io/onlytv.zip",
+      "zip": "https://yavkata.github.io/onlytv.zip",
       "image": "https://yavkata.github.io/onlytv.png",
+      "changelog": "https://yavkata.github.io/changelog_onlytv.txt",
       "description": "Основен билд за телевизия и стрийминг."
     }
   ]
