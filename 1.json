@@ -1,9 +1,1 @@
-{
-  "wizard_name": "Matrix Wizard",
-  "version": "1.0",
-  "builds": [],
-  "backup": {
-    "enabled": true,
-    "default_location": "special://home/backups/"
-  }
-}
+
